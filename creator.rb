@@ -1,4 +1,5 @@
 require_relative "secretcode.rb"
+
 class Creator
   attr_reader :code
   attr_reader :key
@@ -9,10 +10,9 @@ class Creator
   end
 
   def generate_code()
-    code_arr = ["R","G","Y","B","M","C"]
-    @code = 4.times.map {code_arr.sample}
+    code_arr = ["R", "G", "Y", "B", "M", "C"]
+    @code = 4.times.map { code_arr.sample }
   end
-
 end
 
 test = Creator.new()

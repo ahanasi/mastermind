@@ -1,14 +1,14 @@
 require_relative "creator.rb"
 require_relative "guesser.rb"
-require 'colorize'
-require 'pry'
+require "colorize"
+require "pry"
 
 class Mastermind
   attr_reader :computer
   attr_reader :player
   attr_reader :display
 
-  def initialize(computer = Creator.new(), player = Guesser.new(),display = "")
+  def initialize(computer = Creator.new(), player = Guesser.new(), display = "")
     @computer = computer
     @player = player
     @display = display
