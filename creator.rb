@@ -1,14 +1,12 @@
 require_relative "secretcode.rb"
-require 'colorize'
+require "colorize"
 
 class Creator
   attr_reader :code
-  attr_reader :key
   attr_reader :feedback
 
-  def initialize(code = SecretCode.new(), key = [],feedback = "")
+  def initialize(code = SecretCode.new(), feedback = "")
     @code = code
-    @key = key
     @feedback = feedback
   end
 
@@ -19,19 +17,13 @@ class Creator
 
   def give_feedback(guess)
     @feedback = ""
-    guess.each_with_index do |val,i|
+    guess.each_with_index do |val, i|
       if @code[i] == val && @code.include?(val)
         feedback.concat("\u{26AB}".green)
       elsif @code.include?(val)
         feedback.concat("\u{26AB}")
       end
     end
-    @feedback
+    puts @feedback
   end
-
-
-
 end
-
-test = Creator.new()
-test.generate_code()
