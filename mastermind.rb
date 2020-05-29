@@ -40,6 +40,7 @@ class Mastermind
   def play_round()
     #Player prompted for guess
     prompt_for_guess()
+    puts "You guessed: #{colorize_code(player.guess)}"
     unless win_condition()
       #Computer gives feedback
       @computer.give_feedback(@player.guess)
@@ -71,9 +72,7 @@ new_game = Mastermind.new()
 #Computer generates code to be broken
 new_game.computer.generate_code
 
-#Code colorized & displayed (TO BE REMOVED)
-puts new_game.colorize_code(new_game.computer.code)
-
+#Play the game for 12 rounds
 count = 0
 until (new_game.win_condition()) || (count == 12)
   #Play round
@@ -81,3 +80,12 @@ until (new_game.win_condition()) || (count == 12)
   new_game.play_round()
   count += 1
 end
+
+#Display end game message
+if (new_game.win_condition())
+  puts "Awesome! You cracked the code!"
+else
+  puts "You lose! The code was #{new_game.colorize_code(new_game.computer.code)} Better luck next time :)"
+end
+
+
