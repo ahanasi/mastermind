@@ -7,9 +7,6 @@ class Guesser
 
   def build_guess(str)
     @guess = []
-    if str.include? " "
-      str.gsub!(/\s+/, "")
-    end
     @guess = str.split(//)
   end
 end
