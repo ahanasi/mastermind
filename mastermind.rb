@@ -4,13 +4,13 @@ require "colorize"
 require "pry"
 
 class Mastermind
-  attr_reader :computer
-  attr_reader :player
+  attr_reader :creator
+  attr_reader :guesser
   attr_reader :display
 
-  def initialize(computer = Creator.new(), player = Guesser.new(), display = "", win_condition = false)
-    @computer = computer
-    @player = player
+  def initialize(creator, guesser, display = "", win_condition = false)
+    @creator = creator
+    @guesser = guesser
     @display = display
   end
 
@@ -38,12 +38,12 @@ class Mastermind
   end
 
   def play_round()
-    #Player prompted for guess
+    #Guesser prompted for guess
     prompt_for_guess()
-    puts "You guessed: #{colorize_code(player.guess)}"
+    puts "You guessed: #{colorize_code(guesser.guess)}"
     unless win_condition()
-      #Computer gives feedback
-      @computer.give_feedback(@player.guess)
+      #Creator gives feedback
+      @creator.give_feedback(@guesser.guess)
     end
   end
 
@@ -56,21 +56,35 @@ class Mastermind
       guess_str = gets.chomp.upcase
       guess_str.gsub!(/\s+/, "")
     end
-    @player.build_guess(guess_str)
+    @guesser.build_guess(guess_str)
   end
 
   def win_condition()
-    return (@player.guess == @computer.code)
+    return (@guesser.guess == @creator.code)
   end
 end
 
 # Display Instructions
 
-#Initialize Game
-new_game = Mastermind.new()
+
+#Ask if player wants to be guesser or creator
+
+puts "Would you like to be the code creator or code breaker?: (C/B) "
+role = gets.chomp.upcase
+if role == "B"
+  player = Guesser.new()
+  computer = Creator.new()
+  new_game = Mastermind.new(computer,player)
+elsif role == "C"
+  player = Creator.new()
+  computer = Guesser.new()
+  new_game = Mastermind.new(player,computer)
+else
+  "Please type in 'C' or 'B'"
+end
 
 #Computer generates code to be broken
-new_game.computer.generate_code
+new_game.creator.generate_code
 
 #Play the game for 12 rounds
 count = 0
@@ -85,7 +99,7 @@ end
 if (new_game.win_condition())
   puts "Awesome! You cracked the code!"
 else
-  puts "You lose! The code was #{new_game.colorize_code(new_game.computer.code)} Better luck next time :)"
+  puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code)} Better luck next time :)"
 end
 
 
