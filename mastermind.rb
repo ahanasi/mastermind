@@ -47,8 +47,14 @@ class Mastermind
   end
 
   def prompt_for_guess()
-    puts "Type in four letters for your guess. Each letter corresponds to a color in your code.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
+    puts "Type in a string of four letters for your guess. Each letter corresponds to a color in the code you are trying to guess.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
     guess_str = gets.chomp.upcase
+    guess_str.gsub!(/\s+/, "")
+    until (guess_str.match(/^[RGYBMC ]{4}$/))
+      puts "Please enter a valid input (e.g.: R G B Y)"
+      guess_str = gets.chomp.upcase
+      guess_str.gsub!(/\s+/, "")
+    end
     @player.build_guess(guess_str)
   end
 
