@@ -17,6 +17,11 @@ class Creator
     @code = 4.times.map { code_arr.sample }
   end
 
+  def build_code(str)
+    @code = []
+    @code = str.split(//)
+  end
+
   def give_feedback(guess)
     @feedback = ""
     green_count = 0
