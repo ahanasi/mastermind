@@ -37,13 +37,23 @@ class Mastermind
     @display
   end
 
+  def computer_round()
+    #Computer guesses
+    @guesser.guess_code(@creator.feedback_num)
+    puts "The computer guessed: #{colorize_code(@guesser.guess.code)}"
+    unless win_condition()
+      #Creator gives feedback
+      puts @creator.give_feedback(@guesser.guess.code)
+    end
+  end
+
   def player_round()
     #Guesser prompted for guess
     prompt_for_guess()
     puts "You guessed: #{colorize_code(@guesser.guess.code)}"
     unless win_condition()
       #Creator gives feedback
-      @creator.give_feedback(@guesser.guess.code)
+      puts @creator.give_feedback(@guesser.guess.code)
     end
   end
 
@@ -104,6 +114,7 @@ until (new_game.win_condition()) || (count == 12)
   if role == "B"
     new_game.player_round()
   else
+    new_game.computer_round()
   end
   count += 1
 end
