@@ -47,15 +47,20 @@ class Mastermind
     end
   end
 
+  def prompt_for_code()
+    code_str = gets.chomp.upcase
+    code_str.gsub!(/\s+/, "")
+    until (code_str.match(/^[RGYBMC ]{4}$/))
+      puts "Please enter a valid input (e.g.: R G B Y)"
+      code_str = gets.chomp.upcase
+      code_str.gsub!(/\s+/, "")
+    end
+    code_str
+  end
+
   def prompt_for_guess()
     puts "Type in a string of four letters for your guess. Each letter corresponds to a color in the code you are trying to guess.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
-    guess_str = gets.chomp.upcase
-    guess_str.gsub!(/\s+/, "")
-    until (guess_str.match(/^[RGYBMC ]{4}$/))
-      puts "Please enter a valid input (e.g.: R G B Y)"
-      guess_str = gets.chomp.upcase
-      guess_str.gsub!(/\s+/, "")
-    end
+    guess_str = prompt_for_code()
     @guesser.build_guess(guess_str)
   end
 
@@ -66,25 +71,35 @@ end
 
 # Display Instructions
 
-
 #Ask if player wants to be guesser or creator
 
 puts "Would you like to be the code creator or code breaker?: (C/B) "
 role = gets.chomp.upcase
 if role == "B"
+
   player = Guesser.new()
   computer = Creator.new()
-  new_game = Mastermind.new(computer,player)
+  new_game = Mastermind.new(computer, player)
+
+  #Computer generates code to be broken
+  new_game.creator.generate_code
+
 elsif role == "C"
+
   player = Creator.new()
   computer = Guesser.new()
-  new_game = Mastermind.new(player,computer)
+  new_game = Mastermind.new(player, computer)
+
+  #Player creates the code to be broken
+  puts "Type in a string of four letters for your code. Each letter corresponds to a color in the code you are trying to build.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
+  code_str = prompt_for_code()
+  new_game.creator.build_code(code_str)
+
+
+
 else
   "Please type in 'C' or 'B'"
 end
-
-#Computer generates code to be broken
-new_game.creator.generate_code
 
 #Play the game for 12 rounds
 count = 0
@@ -95,11 +110,11 @@ until (new_game.win_condition()) || (count == 12)
   count += 1
 end
 
+
 #Display end game message
 if (new_game.win_condition())
   puts "Awesome! You cracked the code!"
 else
   puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code)} Better luck next time :)"
 end
-
 
