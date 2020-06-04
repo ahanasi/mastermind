@@ -12,22 +12,12 @@ class Creator
     @feedback = feedback
   end
 
-  def generate_code()
-    code_arr = ["R", "G", "Y", "B", "M", "C"]
-    @code = 4.times.map { code_arr.sample }
-  end
-
-  def build_code(str)
-    @code = []
-    @code = str.split(//)
-  end
-
   def give_feedback(guess)
     @feedback = ""
     green_count = 0
     white_count = 0
     to_delete = []
-    combo_arr = @code.zip(guess)
+    combo_arr = @code.code.zip(guess)
     guess_dup = guess.dup
 
     combo_arr.each do |a,b| 

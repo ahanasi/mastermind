@@ -1,12 +1,10 @@
+require_relative "secretcode.rb"
+
 class Guesser
   attr_reader :guess
 
-  def initialize(guess = [])
+  def initialize(guess = SecretCode.new())
     @guess = guess
   end
 
-  def build_guess(str)
-    @guess = []
-    @guess = str.split(//)
-  end
 end

@@ -37,13 +37,13 @@ class Mastermind
     @display
   end
 
-  def play_round()
+  def player_round()
     #Guesser prompted for guess
     prompt_for_guess()
-    puts "You guessed: #{colorize_code(guesser.guess)}"
+    puts "You guessed: #{colorize_code(@guesser.guess.code)}"
     unless win_condition()
       #Creator gives feedback
-      @creator.give_feedback(@guesser.guess)
+      @creator.give_feedback(@guesser.guess.code)
     end
   end
 
@@ -51,7 +51,7 @@ class Mastermind
     code_str = gets.chomp.upcase
     code_str.gsub!(/\s+/, "")
     until (code_str.match(/^[RGYBMC ]{4}$/))
-      puts "Please enter a valid input (e.g.: R G B Y)"
+      puts "\nPlease enter a valid input (e.g.: R G B Y)"
       code_str = gets.chomp.upcase
       code_str.gsub!(/\s+/, "")
     end
@@ -59,46 +59,40 @@ class Mastermind
   end
 
   def prompt_for_guess()
-    puts "Type in a string of four letters for your guess. Each letter corresponds to a color in the code you are trying to guess.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
+    puts "\nType in a string of four letters for your guess. Each letter corresponds to a color in the code you are trying to guess.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
     guess_str = prompt_for_code()
-    @guesser.build_guess(guess_str)
+    @guesser.guess.build_code(guess_str)
   end
 
   def win_condition()
-    return (@guesser.guess == @creator.code)
+    return (@guesser.guess.code == @creator.code.code)
   end
 end
 
 # Display Instructions
 
 #Ask if player wants to be guesser or creator
+role = nil
+until (role == "B" || role == "C")
+  puts "\nWould you like to be the code creator or code breaker?: (C/B) "
+  role = gets.chomp.upcase
+  if role == "B"
+    player = Guesser.new()
+    computer = Creator.new()
+    new_game = Mastermind.new(computer, player)
 
-puts "Would you like to be the code creator or code breaker?: (C/B) "
-role = gets.chomp.upcase
-if role == "B"
+    #Computer generates code to be broken
+    new_game.creator.code.generate_code
+  elsif role == "C"
+    player = Creator.new()
+    computer = Guesser.new()
+    new_game = Mastermind.new(player, computer)
 
-  player = Guesser.new()
-  computer = Creator.new()
-  new_game = Mastermind.new(computer, player)
-
-  #Computer generates code to be broken
-  new_game.creator.generate_code
-
-elsif role == "C"
-
-  player = Creator.new()
-  computer = Guesser.new()
-  new_game = Mastermind.new(player, computer)
-
-  #Player creates the code to be broken
-  puts "Type in a string of four letters for your code. Each letter corresponds to a color in the code you are trying to build.\n Choose from: #{colorize_code(["R", "G", "Y", "B", "M", "C"])}"
-  code_str = prompt_for_code()
-  new_game.creator.build_code(code_str)
-
-
-
-else
-  "Please type in 'C' or 'B'"
+    #Player creates the code to be broken
+    puts "\nType in a string of four letters for your code. Each letter corresponds to a color in the code you are trying to build.\n Choose from: #{new_game.colorize_code(["R", "G", "Y", "B", "M", "C"])}"
+    code_str = new_game.prompt_for_code()
+    new_game.creator.code.build_code(code_str)
+  end
 end
 
 #Play the game for 12 rounds
@@ -106,15 +100,17 @@ count = 0
 until (new_game.win_condition()) || (count == 12)
   #Play round
   puts "Round #{count + 1} / 12"
-  new_game.play_round()
+
+  if role == "B"
+    new_game.player_round()
+  else
+  end
   count += 1
 end
-
 
 #Display end game message
 if (new_game.win_condition())
   puts "Awesome! You cracked the code!"
 else
-  puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code)} Better luck next time :)"
+  puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code.code)} Better luck next time :)"
 end
-
