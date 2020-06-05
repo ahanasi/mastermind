@@ -9,15 +9,14 @@ class Guesser
     @guess = guess
   end
 
-  def guess_code(feedback = "")
+  def guess_code(feedback)
     prev_guess = @guess.code
+    
     @guess.code = SecretCode.new().generate_code
-    if (feedback.split(//).include?("1"))
-      idx = feedback.split(//).index("1")
-      @guess.code[idx] = prev_guess[idx]
-      binding.pry
-    end
-    @guess
-    binding.pry
+
+    green_idx = []
+    green_idx = feedback.split(//).each_index.select { |i| feedback.split(//)[i] == "1" }
+    green_idx.each { |i| @guess.code[i] = prev_guess[i] }
+
   end
 end

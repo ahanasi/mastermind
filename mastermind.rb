@@ -39,11 +39,11 @@ class Mastermind
 
   def computer_round()
     #Computer guesses
-    @guesser.guess_code(@creator.feedback_num)
+    @guesser.guess_code(fb=@creator.feedback_num)
     puts "The computer guessed: #{colorize_code(@guesser.guess.code)}"
     unless win_condition()
       #Creator gives feedback
-      puts @creator.give_feedback(@guesser.guess.code)
+      fb = @creator.give_feedback(@guesser.guess.code)
     end
   end
 
@@ -53,7 +53,8 @@ class Mastermind
     puts "You guessed: #{colorize_code(@guesser.guess.code)}"
     unless win_condition()
       #Creator gives feedback
-      puts @creator.give_feedback(@guesser.guess.code)
+      @creator.give_feedback(@guesser.guess.code)
+      puts @creator.feedback
     end
   end
 
@@ -120,8 +121,16 @@ until (new_game.win_condition()) || (count == 12)
 end
 
 #Display end game message
-if (new_game.win_condition())
-  puts "Awesome! You cracked the code!"
-else
-  puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code.code)} Better luck next time :)"
+if (role == "B")
+  if (new_game.win_condition())
+    puts "Awesome! You cracked the code!"
+  else
+    puts "You lose! The code was #{new_game.colorize_code(new_game.creator.code.code)} Better luck next time :)"
+  end
+else 
+  if (new_game.win_condition())
+    puts "The computer cracked the code!"
+  else
+    puts "The computer was not able to break your code!"
+  end
 end
