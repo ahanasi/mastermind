@@ -82,6 +82,9 @@ end
 
 # Display Instructions
 
+puts ("Mastermind is a puzzle game, in which one player tries to guess a secret code their opponent comes up with.
+  The secret code consists of a series of 4 colored pegs arranged in a particular combination. Each guess results in feedback narrowing down the possibilities of the code. A green peg indicates that you guessed a color in the correct position while a white peg indicates the correct color but incorrect position.")
+
 #Ask if player wants to be guesser or creator
 role = nil
 until (role == "B" || role == "C")
