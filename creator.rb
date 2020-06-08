@@ -31,12 +31,14 @@ class Creator
 
     to_delete.each_with_index { |val, idx| combo_arr.delete(to_delete[idx]) }
     guess_arr = []
+    code_arr = []
 
     combo_arr.each do |a, b|
       guess_arr.push(b)
+      code_arr.push(a)
     end
 
-    white_count = guess_arr.uniq.count{|i| @code.code.include?(i)}
+    white_count = guess_arr.uniq.count{|i| code_arr.include?(i)}
     green_count.times { @feedback.concat("\u{26AB}".green); @feedback_num.concat("1")}
     white_count.times { @feedback.concat("\u{26AB}"); @feedback_num.concat("2")}
   end
@@ -46,3 +48,4 @@ test = Creator.new()
 test.code.code = ["R","R","R","R"]
 lol = test.give_feedback(["G","B","M","C"])
 test.feedback_num
+
