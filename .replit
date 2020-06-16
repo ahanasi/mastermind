@@ -1,2 +1,2 @@
 language = "ruby"
-run = "run = \"run = ruby mastermind.rb"
+run = "ruby mastermind.rb"
