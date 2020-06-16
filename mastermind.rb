@@ -1,3 +1,10 @@
+require 'bundler/inline'
+
+gemfile true do
+ source 'https://rubygems.org/gems/colorize/versions/0.8.1'
+ gem 'colorize'
+end
+
 require_relative "creator.rb"
 require_relative "guesser.rb"
 require "colorize"

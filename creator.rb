@@ -1,3 +1,10 @@
+require 'bundler/inline'
+
+gemfile true do
+ source 'https://rubygems.org/gems/colorize/versions/0.8.1'
+ gem 'colorize'
+end
+
 require_relative "secretcode.rb"
 require "colorize"
 require "set"
@@ -43,9 +50,3 @@ class Creator
     white_count.times { @feedback.concat("\u{26AB}"); @feedback_num.concat("2")}
   end
 end
-
-test = Creator.new()
-test.code.code = ["R","R","R","R"]
-lol = test.give_feedback(["G","B","M","C"])
-test.feedback_num
-

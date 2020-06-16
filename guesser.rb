@@ -1,5 +1,4 @@
 require_relative "secretcode.rb"
-require "colorize"
 require "pry"
 
 class Guesser
